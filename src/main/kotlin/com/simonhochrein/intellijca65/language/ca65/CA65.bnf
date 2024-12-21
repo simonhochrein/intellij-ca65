@@ -1,0 +1,19 @@
+{
+    parserClass="com.simonhochrein.intellijca65.language.ca65.CA65Parser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="CA65"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.simonhochrein.intellijca65.language.ca65.psi.impl"
+
+    elementTypeHolderClass="com.simonhochrein.intellijca65.language.ca65.psi.CA65Types"
+    elementTypeClass="com.simonhochrein.intellijca65.language.ca65.psi.CA65ElementType"
+    tokenTypeClass="com.simonhochrein.intellijca65.language.ca65.psi.CA65TokenType"
+}
+
+ca65File ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY
