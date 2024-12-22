@@ -15,23 +15,36 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
-CRLF=\R
-WHITE_SPACE=[\ \n\t\f]
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
+WHITE_SPACE=[\ \t\f\r]
+COMMENT=;.*\n
+NEWLINE=\n
+IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
+
+HEX_NUMBER=\$[0-9A-Fa-f]+
+BIN_NUMBER=\%[01]+
+DEC_NUMBER=[0-9]+
+STRING=\".*\"
+OPCODE=(lda|sta)
 
 %state WAITING_VALUE
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT} { yybegin(YYINITIAL); return CA65Types.COMMENT; }
-<YYINITIAL> {KEY_CHARACTER}+ { yybegin(YYINITIAL); return CA65Types.KEY; }
-<YYINITIAL> {SEPARATOR} { yybegin(WAITING_VALUE); return CA65Types.SEPARATOR; }
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-<WAITING_VALUE> {WHITE_SPACE}+ { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}* { yybegin(YYINITIAL); return CA65Types.VALUE; }
-({CRLF}|{WHITE_SPACE})+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+{NEWLINE} { return CA65Types.NEWLINE; }
+: { return CA65Types.COLON; }
+# { return CA65Types.HASH; }
+= { return CA65Types.EQUALS; }
+{COMMENT} { return CA65Types.COMMENT; }
+\.include { return CA65Types.MACRO_INCLUDE; }
+\.proc { return CA65Types.MACRO_PROC; }
+\.endproc { return CA65Types.MACRO_PROCEND; }
+{OPCODE} { return CA65Types.OPCODE; }
+{IDENTIFIER} { return CA65Types.IDENTIFIER; }
+{HEX_NUMBER} { return CA65Types.HEX_NUMBER; }
+{BIN_NUMBER} { return CA65Types.BIN_NUMBER; }
+{DEC_NUMBER} { return CA65Types.DEC_NUMBER; }
+{STRING} { return CA65Types.STRING; }
+
+
+{WHITE_SPACE}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 [^] { return TokenType.BAD_CHARACTER; }

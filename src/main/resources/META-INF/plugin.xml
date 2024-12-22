@@ -13,6 +13,9 @@
         <fileType name="CA65 File" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65FileType" fieldName="INSTANCE" language="CA65" extensions="s;inc"/>
         <lang.parserDefinition language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65ParserDefinition" />
         <lang.syntaxHighlighterFactory language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65SyntaxHighlighterFactory" />
+        <lang.psiStructureViewFactory language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65StructureViewFactory" />
+        <typedHandler id="ca65ColonAfterLabel" implementation="com.simonhochrein.intellijca65.editor.CA65TypedHandler" />
+        <annotator language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65Annotator" />
     </extensions>
 
     <applicationListeners>

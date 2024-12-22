@@ -5,15 +5,43 @@
 
     psiClassPrefix="CA65"
     psiImplClassSuffix="Impl"
-    psiPackage="com.simonhochrein.intellijca65.language.ca65.psi.impl"
+    psiPackage="com.simonhochrein.intellijca65.language.ca65.psi"
+    psiImplPackage="com.simonhochrein.intellijca65.language.ca65.psi.impl"
 
     elementTypeHolderClass="com.simonhochrein.intellijca65.language.ca65.psi.CA65Types"
     elementTypeClass="com.simonhochrein.intellijca65.language.ca65.psi.CA65ElementType"
     tokenTypeClass="com.simonhochrein.intellijca65.language.ca65.psi.CA65TokenType"
+
+    psiImplUtilClass="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65PsiImplUtilKt"
 }
 
 ca65File ::= item_*
 
-private item_ ::= (property|COMMENT|CRLF)
+private item_ ::= (macro | constant | line_comment | section | instruction | NEWLINE)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+private macro ::= include | proc
+
+include ::= MACRO_INCLUDE STRING NEWLINE
+
+proc ::= MACRO_PROC NEWLINE MACRO_PROCEND
+
+constant ::= identifier EQUALS expression
+
+line_comment ::= COMMENT
+
+section ::= label instruction* {
+	mixin="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65NamedElementImpl"
+	implements="com.simonhochrein.intellijca65.language.ca65.psi.CA65NamedElement"
+	methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}
+
+label ::= IDENTIFIER COLON NEWLINE
+
+instruction ::= OPCODE NEWLINE
+
+
+expression ::= STRING | number | immediate | IDENTIFIER
+
+number ::= HEX_NUMBER | BIN_NUMBER | DEC_NUMBER
+
+immediate ::= HASH (number | IDENTIFIER)

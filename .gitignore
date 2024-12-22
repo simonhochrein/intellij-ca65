@@ -3,3 +3,5 @@
 .intellijPlatform
 .qodana
 build
+
+jflex-1.9.1.jar
