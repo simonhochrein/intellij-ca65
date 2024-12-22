@@ -4,7 +4,6 @@ import com.intellij.navigation.ItemPresentation
 import com.simonhochrein.intellijca65.language.ca65.psi.CA65Section
 import com.simonhochrein.intellijca65.language.ca65.psi.CA65Types
 import com.simonhochrein.intellijca65.language.ca65.psi.createLabel
-import javax.swing.Icon
 
 fun getKey(element: CA65Section) = element.node.findChildByType(CA65Types.LABEL)?.text
 
