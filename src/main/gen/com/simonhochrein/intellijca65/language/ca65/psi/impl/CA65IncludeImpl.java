@@ -27,4 +27,10 @@ public class CA65IncludeImpl extends ASTWrapperPsiElement implements CA65Include
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public CA65StringLiteral getStringLiteral() {
+    return findNotNullChildByClass(CA65StringLiteral.class);
+  }
+
 }

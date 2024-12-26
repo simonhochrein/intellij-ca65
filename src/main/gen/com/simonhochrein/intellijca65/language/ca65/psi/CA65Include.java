@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface CA65Include extends PsiElement {
 
+  @NotNull
+  CA65StringLiteral getStringLiteral();
+
 }

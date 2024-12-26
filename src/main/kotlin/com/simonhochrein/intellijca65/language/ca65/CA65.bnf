@@ -21,7 +21,11 @@ private item_ ::= (macro | constant | line_comment | section | instruction | NEW
 
 private macro ::= include | proc
 
-include ::= MACRO_INCLUDE STRING NEWLINE
+include ::= MACRO_INCLUDE string_literal NEWLINE
+
+string_literal ::= STRING {
+	mixin="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65StringLiteralMixin"
+}
 
 proc ::= MACRO_PROC NEWLINE MACRO_PROCEND
 

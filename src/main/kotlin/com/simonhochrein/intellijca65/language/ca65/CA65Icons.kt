@@ -5,6 +5,6 @@ import com.intellij.openapi.util.IconLoader
 
 class CA65Icons {
     companion object {
-        val FILE = AllIcons.Xml.Html5
+        val FILE = IconLoader.getIcon("/icons/retrogradeFile.svg", CA65Icons::class.java)
     }
 }

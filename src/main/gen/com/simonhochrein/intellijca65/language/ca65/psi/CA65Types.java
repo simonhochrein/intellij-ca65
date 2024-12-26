@@ -18,6 +18,7 @@ public interface CA65Types {
   IElementType NUMBER = new CA65ElementType("NUMBER");
   IElementType PROC = new CA65ElementType("PROC");
   IElementType SECTION = new CA65ElementType("SECTION");
+  IElementType STRING_LITERAL = new CA65ElementType("STRING_LITERAL");
 
   IElementType BIN_NUMBER = new CA65TokenType("BIN_NUMBER");
   IElementType COLON = new CA65TokenType("COLON");
@@ -66,6 +67,9 @@ public interface CA65Types {
       }
       else if (type == SECTION) {
         return new CA65SectionImpl(node);
+      }
+      else if (type == STRING_LITERAL) {
+        return new CA65StringLiteralImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

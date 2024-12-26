@@ -97,13 +97,15 @@ public class CA65Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // MACRO_INCLUDE STRING NEWLINE
+  // MACRO_INCLUDE string_literal NEWLINE
   public static boolean include(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "include")) return false;
     if (!nextTokenIs(b, MACRO_INCLUDE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MACRO_INCLUDE, STRING, NEWLINE);
+    r = consumeToken(b, MACRO_INCLUDE);
+    r = r && string_literal(b, l + 1);
+    r = r && consumeToken(b, NEWLINE);
     exit_section_(b, m, INCLUDE, r);
     return r;
   }
@@ -216,6 +218,18 @@ public class CA65Parser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "section_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // STRING
+  public static boolean string_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string_literal")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, STRING_LITERAL, r);
+    return r;
   }
 
 }

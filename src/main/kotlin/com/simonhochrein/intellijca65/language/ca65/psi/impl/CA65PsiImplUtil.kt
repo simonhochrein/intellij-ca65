@@ -1,9 +1,12 @@
 package com.simonhochrein.intellijca65.language.ca65.psi.impl
 
 import com.intellij.navigation.ItemPresentation
-import com.simonhochrein.intellijca65.language.ca65.psi.CA65Section
-import com.simonhochrein.intellijca65.language.ca65.psi.CA65Types
-import com.simonhochrein.intellijca65.language.ca65.psi.createLabel
+import com.intellij.openapi.paths.PathReference
+import com.intellij.openapi.paths.PathReferenceManager
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiReference
+import com.simonhochrein.intellijca65.language.ca65.CA65FileType
+import com.simonhochrein.intellijca65.language.ca65.psi.*
 
 fun getKey(element: CA65Section) = element.node.findChildByType(CA65Types.LABEL)?.text
 
@@ -19,6 +22,11 @@ fun setName(element: CA65Section, name: String): CA65Section {
 }
 
 fun getNameIdentifier(element: CA65Section) = element.node.findChildByType(CA65Types.LABEL)?.psi
+
+fun getReference(element: CA65Include): Array<PsiReference> {
+    val el = element.node.findChildByType(CA65Types.STRING)
+    return PathReferenceManager.getInstance().createReferences(element, false, false, true, arrayOf(CA65FileType.INSTANCE))
+}
 
 fun getPresentation(element: CA65Section) = object: ItemPresentation {
     override fun getPresentableText() = element.key

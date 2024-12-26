@@ -47,6 +47,10 @@ public class CA65Visitor extends PsiElementVisitor {
     visitNamedElement(o);
   }
 
+  public void visitStringLiteral(@NotNull CA65StringLiteral o) {
+    visitPsiElement(o);
+  }
+
   public void visitNamedElement(@NotNull CA65NamedElement o) {
     visitPsiElement(o);
   }
