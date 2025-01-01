@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.simonhochrein.intellijca65.language.ca65.psi.CA65Types.*;
 import com.simonhochrein.intellijca65.language.ca65.psi.*;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.NlsSafe;
 
 public class CA65SectionImpl extends CA65NamedElementImpl implements CA65Section {
 
@@ -40,15 +41,21 @@ public class CA65SectionImpl extends CA65NamedElementImpl implements CA65Section
   }
 
   @Override
-  @Nullable
-  public @NotNull String getKey() {
+  @NotNull
+  public List<CA65LineComment> getLineCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, CA65LineComment.class);
+  }
+
+  @Override
+  @NotNull
+  public @NlsSafe String getKey() {
     return CA65PsiImplUtilKt.getKey(this);
   }
 
   @Override
   @NotNull
-  public String getValue() {
-    return CA65PsiImplUtilKt.getValue(this);
+  public String getName() {
+    return CA65PsiImplUtilKt.getName(this);
   }
 
   @Override

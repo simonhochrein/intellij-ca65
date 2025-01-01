@@ -27,4 +27,16 @@ public class CA65InstructionImpl extends ASTWrapperPsiElement implements CA65Ins
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<CA65Expression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, CA65Expression.class);
+  }
+
+  @Override
+  @Nullable
+  public CA65LineComment getLineComment() {
+    return findChildByClass(CA65LineComment.class);
+  }
+
 }

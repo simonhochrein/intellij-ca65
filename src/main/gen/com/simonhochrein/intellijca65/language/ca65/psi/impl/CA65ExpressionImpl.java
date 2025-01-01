@@ -29,8 +29,26 @@ public class CA65ExpressionImpl extends ASTWrapperPsiElement implements CA65Expr
 
   @Override
   @Nullable
+  public CA65Expression getExpression() {
+    return findChildByClass(CA65Expression.class);
+  }
+
+  @Override
+  @Nullable
   public CA65Immediate getImmediate() {
     return findChildByClass(CA65Immediate.class);
+  }
+
+  @Override
+  @Nullable
+  public CA65MathExpression getMathExpression() {
+    return findChildByClass(CA65MathExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public CA65NamespacedIdentifier getNamespacedIdentifier() {
+    return findChildByClass(CA65NamespacedIdentifier.class);
   }
 
   @Override

@@ -11,32 +11,20 @@ import static com.simonhochrein.intellijca65.language.ca65.psi.CA65Types.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.simonhochrein.intellijca65.language.ca65.psi.*;
 
-public class CA65IncludeImpl extends ASTWrapperPsiElement implements CA65Include {
+public class CA65BitwiseOperatorImpl extends ASTWrapperPsiElement implements CA65BitwiseOperator {
 
-  public CA65IncludeImpl(@NotNull ASTNode node) {
+  public CA65BitwiseOperatorImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull CA65Visitor visitor) {
-    visitor.visitInclude(this);
+    visitor.visitBitwiseOperator(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof CA65Visitor) accept((CA65Visitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public CA65LineComment getLineComment() {
-    return findChildByClass(CA65LineComment.class);
-  }
-
-  @Override
-  @NotNull
-  public CA65StringLiteral getStringLiteral() {
-    return findNotNullChildByClass(CA65StringLiteral.class);
   }
 
 }

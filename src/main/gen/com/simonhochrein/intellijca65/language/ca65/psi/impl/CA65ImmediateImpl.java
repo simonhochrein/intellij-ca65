@@ -28,9 +28,9 @@ public class CA65ImmediateImpl extends ASTWrapperPsiElement implements CA65Immed
   }
 
   @Override
-  @Nullable
-  public CA65Number getNumber() {
-    return findChildByClass(CA65Number.class);
+  @NotNull
+  public CA65Expression getExpression() {
+    return findNotNullChildByClass(CA65Expression.class);
   }
 
 }

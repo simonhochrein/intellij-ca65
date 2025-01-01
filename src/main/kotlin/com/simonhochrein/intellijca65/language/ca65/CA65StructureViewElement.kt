@@ -8,7 +8,9 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.simonhochrein.intellijca65.language.ca65.psi.CA65Proc
 import com.simonhochrein.intellijca65.language.ca65.psi.CA65Section
+import com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65ProcImpl
 import com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65SectionImpl
 import javax.swing.Icon
 
@@ -19,13 +21,16 @@ class CA65StructureViewElement(element: NavigatablePsiElement): StructureViewTre
 
     override fun getChildren(): Array<TreeElement> {
         if (myElement is CA65File) {
-            val sections = PsiTreeUtil.getChildrenOfType(myElement, CA65Section::class.java) ?: return emptyArray()
-            val treeElements = arrayListOf<CA65StructureViewElement>()
+            val results = arrayListOf<TreeElement>()
+            results.addAll(PsiTreeUtil.getChildrenOfType(myElement, CA65Section::class.java)?.map { CA65StructureViewElement(it as CA65SectionImpl) } ?: emptyList())
+            results.addAll(PsiTreeUtil.getChildrenOfType(myElement, CA65Proc::class.java)?.map { CA65StructureViewElement(it as CA65ProcImpl) } ?: emptyList())
 
-            for (section in sections) {
-                treeElements.add(CA65StructureViewElement(section as CA65SectionImpl))
-            }
-            return treeElements.toTypedArray()
+            return results.toTypedArray()
+        }
+        if(myElement is CA65Proc) {
+            val results = arrayListOf<TreeElement>()
+            results.addAll(PsiTreeUtil.getChildrenOfType(myElement, CA65Section::class.java)?.map { CA65StructureViewElement(it as CA65SectionImpl) } ?: emptyList())
+            return results.toTypedArray()
         }
         return emptyArray()
     }
@@ -36,15 +41,11 @@ class CA65StructureViewElement(element: NavigatablePsiElement): StructureViewTre
     override fun canNavigateToSource() = myElement.canNavigateToSource()
     override fun navigate(requestFocus: Boolean) = myElement.navigate(requestFocus)
 
-    override fun getPresentableText(): String? {
-        if (myElement is CA65Section) {
-            return myElement.label.text
-        }
-        if (myElement is CA65File) {
-            return myElement.name
-        }
-
-        return null
+    override fun getPresentableText() = when (myElement) {
+        is CA65Section -> myElement.label.text
+        is CA65File -> myElement.name
+        is CA65Proc -> (myElement as CA65Proc).name
+        else -> null
     }
 
     override fun getIcon(p0: Boolean) = AllIcons.Nodes.Lambda

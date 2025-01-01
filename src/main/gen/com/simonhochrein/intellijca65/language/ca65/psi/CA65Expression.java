@@ -8,7 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface CA65Expression extends PsiElement {
 
   @Nullable
+  CA65Expression getExpression();
+
+  @Nullable
   CA65Immediate getImmediate();
+
+  @Nullable
+  CA65MathExpression getMathExpression();
+
+  @Nullable
+  CA65NamespacedIdentifier getNamespacedIdentifier();
 
   @Nullable
   CA65Number getNumber();

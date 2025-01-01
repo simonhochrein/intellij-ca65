@@ -36,7 +36,7 @@ class CA65SyntaxHighlighter: SyntaxHighlighterBase() {
         return when (tokenType) {
             CA65Types.STRING -> STRING_KEYS
             CA65Types.COMMENT -> COMMENT_KEYS
-            CA65Types.MACRO_PROC, CA65Types.MACRO_INCLUDE -> MACRO_KEYS
+            CA65Types.MACRO_PROC, CA65Types.MACRO_PROCEND, CA65Types.MACRO_INCLUDE, CA65Types.PSEUDO_INSTRUCTION -> MACRO_KEYS
             CA65Types.HEX_NUMBER, CA65Types.BIN_NUMBER, CA65Types.DEC_NUMBER -> NUMBER_KEYS
             CA65Types.OPCODE -> OPCODES_KEYS
             TokenType.BAD_CHARACTER -> BAD_CHAR_KEYS

@@ -11,14 +11,14 @@ import static com.simonhochrein.intellijca65.language.ca65.psi.CA65Types.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.simonhochrein.intellijca65.language.ca65.psi.*;
 
-public class CA65IncludeImpl extends ASTWrapperPsiElement implements CA65Include {
+public class CA65MathExpressionImpl extends ASTWrapperPsiElement implements CA65MathExpression {
 
-  public CA65IncludeImpl(@NotNull ASTNode node) {
+  public CA65MathExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull CA65Visitor visitor) {
-    visitor.visitInclude(this);
+    visitor.visitMathExpression(this);
   }
 
   @Override
@@ -28,15 +28,21 @@ public class CA65IncludeImpl extends ASTWrapperPsiElement implements CA65Include
   }
 
   @Override
-  @Nullable
-  public CA65LineComment getLineComment() {
-    return findChildByClass(CA65LineComment.class);
+  @NotNull
+  public List<CA65BitwiseOperator> getBitwiseOperatorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, CA65BitwiseOperator.class);
   }
 
   @Override
   @NotNull
-  public CA65StringLiteral getStringLiteral() {
-    return findNotNullChildByClass(CA65StringLiteral.class);
+  public List<CA65NamespacedIdentifier> getNamespacedIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, CA65NamespacedIdentifier.class);
+  }
+
+  @Override
+  @NotNull
+  public List<CA65Number> getNumberList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, CA65Number.class);
   }
 
 }

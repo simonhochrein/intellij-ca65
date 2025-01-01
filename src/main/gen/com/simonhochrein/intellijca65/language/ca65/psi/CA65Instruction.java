@@ -7,4 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface CA65Instruction extends PsiElement {
 
+  @NotNull
+  List<CA65Expression> getExpressionList();
+
+  @Nullable
+  CA65LineComment getLineComment();
+
 }

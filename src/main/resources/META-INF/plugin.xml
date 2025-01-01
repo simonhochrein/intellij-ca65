@@ -9,7 +9,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.simonhochrein.intellijca65.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="com.simonhochrein.intellijca65.toolWindow.EverDriveToolWindowFactory" id="EverDriveToolWindow"/>
         <fileType name="CA65 File" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65FileType" fieldName="INSTANCE" language="CA65" extensions="s;inc;asm"/>
         <lang.parserDefinition language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65ParserDefinition" />
         <lang.syntaxHighlighterFactory language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65SyntaxHighlighterFactory" />
@@ -17,9 +17,18 @@
         <psi.referenceContributor language="CA65" implementation="com.simonhochrein.intellijca65.language.ca65.CA65ReferenceContributor" />
         <typedHandler id="ca65ColonAfterLabel" implementation="com.simonhochrein.intellijca65.editor.CA65TypedHandler" />
         <annotator language="CA65" implementationClass="com.simonhochrein.intellijca65.language.ca65.CA65Annotator" />
+        <configurationType implementation="com.simonhochrein.intellijca65.run.EverDriveRunConfigurationType" />
+        <notificationGroup displayType="BALLOON" id="EverDrive" />
     </extensions>
 
     <applicationListeners>
         <listener class="com.simonhochrein.intellijca65.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
     </applicationListeners>
+    <actions>
+        <action id="com.simonhochrein.intellijca65.run.EverDriveRunProfileAction"
+                class="com.simonhochrein.intellijca65.run.EverDriveRunProfileAction"
+                text="Run">
+            <add-to-group group-id="MainToolbarRight" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>

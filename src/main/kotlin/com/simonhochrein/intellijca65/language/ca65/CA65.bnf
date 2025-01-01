@@ -21,31 +21,52 @@ private item_ ::= (macro | constant | line_comment | section | instruction | NEW
 
 private macro ::= include | proc
 
-include ::= MACRO_INCLUDE string_literal NEWLINE
+include ::= MACRO_INCLUDE string_literal (line_comment | NEWLINE)
 
 string_literal ::= STRING {
 	mixin="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65StringLiteralMixin"
 }
 
-proc ::= MACRO_PROC NEWLINE MACRO_PROCEND
+proc ::= MACRO_PROC IDENTIFIER item_* MACRO_PROCEND {
+	mixin="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65NamedElementImpl"
+	implements="com.simonhochrein.intellijca65.language.ca65.psi.CA65NamedElement"
+	methods=[getName setName getNameIdentifier getPresentation]
+}
 
-constant ::= identifier EQUALS expression
+constant ::= identifier (EQUALS | LABEL_ASSIGNMENT) expression
 
 line_comment ::= COMMENT
 
-section ::= label instruction* {
+section ::= label (line_comment | instruction | NEWLINE)* {
 	mixin="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65NamedElementImpl"
 	implements="com.simonhochrein.intellijca65.language.ca65.psi.CA65NamedElement"
-	methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+	methods=[getKey getName setName getNameIdentifier getPresentation]
 }
 
-label ::= IDENTIFIER COLON NEWLINE
+label ::= IDENTIFIER COLON
 
-instruction ::= OPCODE NEWLINE
+instruction ::= (
+	PSEUDO_INSTRUCTION expression (COMMA expression)*
+	| PSEUDO_INSTRUCTION
+	| IDENTIFIER expression (COMMA expression)*
+	| IDENTIFIER
+	| OPCODE expression (COMMA expression)*
+	| OPCODE
+) line_comment? NEWLINE
 
 
-expression ::= STRING | number | immediate | IDENTIFIER
+expression ::= (OPEN_PAREN expression CLOSE_PAREN) | (OPEN_BRACE expression CLOSE_BRACE) | math_expression | STRING | number | immediate | namespaced_identifier
+math_expression ::= (namespaced_identifier | number) (bitwise_operator (namespaced_identifier | number))+
+
+bitwise_operator ::= BITWISE_OR | BITWISE_AND | PLUS | MINUS | MUL | DIV
 
 number ::= HEX_NUMBER | BIN_NUMBER | DEC_NUMBER
 
-immediate ::= HASH (number | IDENTIFIER)
+immediate ::= HASH expression
+
+namespaced_identifier ::= IDENTIFIER (NAMESPACE_SEPARATOR IDENTIFIER)* | (NAMESPACE_SEPARATOR IDENTIFIER)+
+{
+	mixin="com.simonhochrein.intellijca65.language.ca65.psi.impl.CA65NamedElementImpl"
+	implements="com.simonhochrein.intellijca65.language.ca65.psi.CA65NamedElement"
+	methods=[getName setName getNameIdentifier getReferences]
+}

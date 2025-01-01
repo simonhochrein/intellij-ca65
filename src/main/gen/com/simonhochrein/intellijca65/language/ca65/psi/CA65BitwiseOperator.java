@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface CA65Immediate extends PsiElement {
-
-  @NotNull
-  CA65Expression getExpression();
+public interface CA65BitwiseOperator extends PsiElement {
 
 }

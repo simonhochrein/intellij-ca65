@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.NlsSafe;
 
 public interface CA65Section extends CA65NamedElement {
 
@@ -14,15 +15,14 @@ public interface CA65Section extends CA65NamedElement {
   @NotNull
   CA65Label getLabel();
 
-  @Nullable
-  @NotNull String getKey();
+  @NotNull
+  List<CA65LineComment> getLineCommentList();
 
   @NotNull
-  String getValue();
+  @NlsSafe String getKey();
 
-  //WARNING: getName(...) is skipped
-  //matching getName(CA65Section, ...)
-  //methods are not found in CA65PsiImplUtilKt
+  @NotNull
+  String getName();
 
   @NotNull
   CA65Section setName(@NotNull String name);

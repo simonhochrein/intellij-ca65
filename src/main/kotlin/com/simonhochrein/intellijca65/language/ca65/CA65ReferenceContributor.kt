@@ -10,6 +10,7 @@ import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.ProcessingContext
 import com.simonhochrein.intellijca65.language.ca65.psi.CA65Include
+import com.simonhochrein.intellijca65.language.ca65.psi.CA65NamespacedIdentifier
 import com.simonhochrein.intellijca65.language.ca65.psi.CA65StringLiteral
 import java.util.*
 
@@ -17,9 +18,28 @@ class CA65ReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(
             psiElement(CA65StringLiteral::class.java).inside(CA65Include::class.java),
-            CA65ReferenceProvider(),
-            PsiReferenceRegistrar.HIGHER_PRIORITY
+            CA65ReferenceProvider()
         )
+        registrar.registerReferenceProvider(
+            psiElement(CA65NamespacedIdentifier::class.java),
+            object: PsiReferenceProvider() {
+                override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
+                    return arrayOf(CA65LabelReference(element))
+                }
+            }
+        )
+    }
+}
+
+
+class CA65LabelReference(element: PsiElement): PsiPolyVariantReferenceBase<PsiElement>(element, TextRange(0, element.textLength)) {
+    override fun multiResolve(p0: Boolean): Array<ResolveResult> {
+        val results = arrayListOf<ResolveResult>()
+
+        results.addAll(CA65Util.findLabels(element.project, element.text).map { PsiElementResolveResult(it) })
+        results.addAll(CA65Util.findProcs(element.project, element.text).map { PsiElementResolveResult(it) })
+
+        return results.toTypedArray()
     }
 }
 

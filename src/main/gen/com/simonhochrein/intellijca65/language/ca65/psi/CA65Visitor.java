@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class CA65Visitor extends PsiElementVisitor {
 
+  public void visitBitwiseOperator(@NotNull CA65BitwiseOperator o) {
+    visitPsiElement(o);
+  }
+
   public void visitConstant(@NotNull CA65Constant o) {
     visitPsiElement(o);
   }
@@ -35,12 +39,20 @@ public class CA65Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMathExpression(@NotNull CA65MathExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamespacedIdentifier(@NotNull CA65NamespacedIdentifier o) {
+    visitNamedElement(o);
+  }
+
   public void visitNumber(@NotNull CA65Number o) {
     visitPsiElement(o);
   }
 
   public void visitProc(@NotNull CA65Proc o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitSection(@NotNull CA65Section o) {
